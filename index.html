@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barang yang kena Beli</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+
+        h2, h3 {
+            text-align: center;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: inline-block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="number"] {
+            width: 70px;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
+
+        .checkbox-group {
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+            margin: 10px auto;
+            display: block;
+            width: 100%;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        button:hover:not(:disabled) {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        .category-group {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .category-group.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .summary-box {
+            background-color: #000;
+            color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            margin-bottom: 15px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Pilih dengan (Qty 25) ke bawah</h2>
+
+        <!-- Main Menu -->
+        <div id="main-menu">
+            <div id="summary-box" class="summary-box">No items selected.</div>
+            <button onclick="showCategory('A')" id="categoryA-btn">Category A</button>
+            <button onclick="showCategory('B')" id="categoryB-btn" disabled>Category B</button>
+            <button onclick="showCategory('C')" id="categoryC-btn" disabled>Category C</button>
+            <button onclick="showCategory('D')" id="categoryD-btn" disabled>Category D</button>
+            <button onclick="showCategory('E')" id="categoryE-btn" disabled>Category E</button>
+            <button onclick="showCategory('F')" id="categoryF-btn" disabled>Category F</button>
+            <button onclick="downloadSummary()">Download file yang kena beli</button>
+        </div>
+
+        <!-- Category Forms -->
+        <div id="categories"></div>
+    </div>
+
+    <script>
+        const categories = ['A', 'B', 'C', 'D', 'E', 'F'];
+        const items = {
+            A: ['Fish', 'Dragon Fruit'],
+            B: ['Chicken', 'Mutton'],
+            C: ['Rice', 'Beans'],
+            D: ['Milk', 'Cheese'],
+            E: ['Eggs', 'Flour'],
+            F: ['Oil', 'Sugar']
+        };
+        let selectedItems = {};
+
+        function generateForms() {
+            const container = document.getElementById('categories');
+            categories.forEach(category => {
+                selectedItems[category] = [];
+                const div = document.createElement('div');
+                div.id = `category${category}`;
+                div.classList.add('category-group');
+                div.innerHTML = `
+                    <h3>Category ${category}</h3>
+                    <form id="category${category}-form">
+                        ${items[category]
+                            .map(
+                                (item, index) => `
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="item${category}${index}" value="${item}">
+                                    <label for="item${category}${index}">${item}</label>
+                                    <input type="number" id="quantity${category}${index}" min="1" max="25" placeholder="Qty">
+                                </div>
+                            `
+                            )
+                            .join('')}
+                        <button type="button" onclick="submitCategory('${category}')">Submit</button>
+                        <button type="button" onclick="skipCategory('${category}')">Skip</button>
+                    </form>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function showCategory(category) {
+            const mainMenu = document.getElementById('main-menu');
+            const categoryDiv = document.getElementById(`category${category}`);
+
+            mainMenu.classList.add('hidden');
+            categoryDiv.classList.add('show');
+        }
+
+        function submitCategory(category) {
+            const form = document.getElementById(`category${category}-form`);
+            const checkboxes = form.querySelectorAll('input[type="checkbox"]');
+            const items = [];
+
+            checkboxes.forEach((checkbox, index) => {
+                if (checkbox.checked) {
+                    const quantityInput = form.querySelector(`#quantity${category}${index}`);
+                    const quantity = quantityInput.value;
+                    if (quantity > 0) {
+                        items.push({ item: checkbox.value, quantity: parseInt(quantity) });
+                    }
+                }
+            });
+
+            if (items.length === 0) {
+                alert(`Please select at least one item from Category ${category} or use the "Skip" button.`);
+                return;
+            }
+
+            selectedItems[category] = items;
+            unlockNextCategory(category);
+        }
+
+        function skipCategory(category) {
+            alert(`Category ${category} skipped.`);
+            unlockNextCategory(category);
+        }
+
+        function unlockNextCategory(category) {
+            const currentIndex = categories.indexOf(category);
+            if (currentIndex + 1 < categories.length) {
+                const nextCategory = categories[currentIndex + 1];
+                document.getElementById(`category${nextCategory}-btn`).disabled = false;
+            }
+
+            updateSummaryBox();
+            const mainMenu = document.getElementById('main-menu');
+            const categoryDiv = document.getElementById(`category${category}`);
+
+            categoryDiv.classList.remove('show');
+            mainMenu.classList.remove('hidden');
+        }
+
+        function updateSummaryBox() {
+            const summaryBox = document.getElementById('summary-box');
+            let summary = '';
+
+            categories.forEach(category => {
+                if (selectedItems[category].length > 0) {
+                    summary += `Category ${category}:\n`;
+                    selectedItems[category].forEach(item => {
+                        summary += `  - ${item.item}: ${item.quantity} pcs\n`;
+                    });
+                }
+            });
+
+            summaryBox.textContent = summary.trim() || 'No items selected.';
+        }
+
+        function downloadSummary() {
+            const summaryBox = document.getElementById('summary-box').textContent;
+            const blob = new Blob([summaryBox], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'barang-kena-beli.txt';
+            link.click();
+        }
+
+        generateForms();
+    </script>
+</body>
+</html>
