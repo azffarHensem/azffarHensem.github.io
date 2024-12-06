@@ -17,6 +17,7 @@
             align-items: center;
             overflow: hidden;
             transition: background-color 0.4s ease;
+            flex-direction: column; /* Center content vertically */
         }
 
         /* Container for content with white background */
@@ -33,6 +34,7 @@
             justify-content: flex-start; /* Align content to the top */
             opacity: 0;
             animation: fadeIn 1s forwards;
+            text-align: center; /* Center text inside the container */
         }
 
         /* Fade-in animation for the container */
@@ -49,6 +51,20 @@
             color: #2c3e50;
             font-weight: 700;
             margin-bottom: 20px;
+        }
+
+        /* Logo style */
+        .logo-container {
+            width: 100%;
+            background-color: #2980b9;
+            padding: 20px;
+            margin-bottom: 20px; /* Add some space between the logo and the main content */
+            border-radius: 8px 8px 0 0; /* Rounded corners at the top */
+        }
+
+        .logo-container img {
+            max-width: 100%;
+            height: auto;
         }
 
         .checkbox-group {
@@ -152,6 +168,11 @@
     </style>
 </head>
 <body>
+    <!-- Logo Container -->
+    <div class="logo-container">
+        <img src="https://via.placeholder.com/400x100.png?text=Your+Logo+Here" alt="Logo">
+    </div>
+
     <div class="container">
         <h2>Pilih dengan (Qty 25) ke bawah</h2>
 
@@ -164,6 +185,7 @@
             <button onclick="showCategory('E')" id="categoryE-btn" disabled>Category E</button>
             <button onclick="showCategory('F')" id="categoryF-btn" disabled>Category F</button>
             <button onclick="downloadSummary()">Download file yang kena beli</button>
+            <button onclick="clearCookies()">Delete Cookie</button> <!-- Added Delete Cookie Button -->
         </div>
 
         <!-- Category Forms -->
@@ -185,6 +207,7 @@
         };
         let selectedItems = {};
 
+        // Function to generate category forms
         function generateForms() {
             const container = document.getElementById('categories');
             categories.forEach(category => {
@@ -193,51 +216,28 @@
                 div.id = `category${category}`;
                 div.classList.add('category-group');
 
-                // Check if this category should have an image
-                if (category === 'A') {
-                    div.innerHTML = `
-                        <h3>Category ${category}</h3>
-                        <img src="https://via.placeholder.com/300" alt="Category A Image" class="category-image">
-                        <form id="category${category}-form">
-                            ${items[category]
-                                .map(
-                                    (item, index) => `
-                                <div class="checkbox-group">
-                                    <input type="checkbox" id="item${category}${index}" value="${item}">
-                                    <label for="item${category}${index}">${item}</label>
-                                    <input type="number" id="quantity${category}${index}" min="1" max="25" placeholder="Qty">
-                                </div>
-                            `
-                                )
-                                .join('')}
-                            <button type="button" onclick="submitCategory('${category}')">Submit</button>
-                            <button type="button" onclick="skipCategory('${category}')">Skip</button>
-                        </form>
-                    `;
-                } else {
-                    div.innerHTML = `
-                        <h3>Category ${category}</h3>
-                        <form id="category${category}-form">
-                            ${items[category]
-                                .map(
-                                    (item, index) => `
-                                <div class="checkbox-group">
-                                    <input type="checkbox" id="item${category}${index}" value="${item}">
-                                    <label for="item${category}${index}">${item}</label>
-                                    <input type="number" id="quantity${category}${index}" min="1" max="25" placeholder="Qty">
-                                </div>
-                            `
-                                )
-                                .join('')}
-                            <button type="button" onclick="submitCategory('${category}')">Submit</button>
-                            <button type="button" onclick="skipCategory('${category}')">Skip</button>
-                        </form>
-                    `;
-                }
+                div.innerHTML = `
+                    <h3>Category ${category}</h3>
+                    <form id="category${category}-form">
+                        ${items[category]
+                            .map(
+                                (item, index) => `
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="item${category}${index}" value="${item}">
+                                <label for="item${category}${index}">${item}</label>
+                                <input type="number" id="quantity${category}${index}" min="1" max="25" placeholder="Qty">
+                            </div>`
+                            )
+                            .join('')}
+                        <button type="button" onclick="submitCategory('${category}')">Submit</button>
+                        <button type="button" onclick="skipCategory('${category}')">Skip</button>
+                    </form>
+                `;
                 container.appendChild(div);
             });
         }
 
+        // Show category form
         function showCategory(category) {
             const mainMenu = document.getElementById('main-menu');
             const categoryDiv = document.getElementById(`category${category}`);
@@ -246,35 +246,37 @@
             categoryDiv.classList.add('show');
         }
 
+        // Submit selected items in category
         function submitCategory(category) {
             const form = document.getElementById(`category${category}-form`);
             const checkboxes = form.querySelectorAll('input[type="checkbox"]');
-            const items = [];
+            const itemsList = [];
 
             checkboxes.forEach((checkbox, index) => {
                 if (checkbox.checked) {
                     const quantityInput = form.querySelector(`#quantity${category}${index}`);
                     const quantity = quantityInput.value;
                     if (quantity > 0) {
-                        items.push({ item: checkbox.value, quantity: parseInt(quantity) });
+                        itemsList.push({ item: checkbox.value, quantity: parseInt(quantity) });
                     }
                 }
             });
 
-            if (items.length === 0) {
+            if (itemsList.length === 0) {
                 alert(`Please select at least one item from Category ${category} or use the "Skip" button.`);
                 return;
             }
 
-            selectedItems[category] = items;
+            selectedItems[category] = itemsList;
             unlockNextCategory(category);
         }
 
+        // Skip the category
         function skipCategory(category) {
-            // Simply skip the category without showing any alert
             unlockNextCategory(category);
         }
 
+        // Unlock the next category and update the UI
         function unlockNextCategory(category) {
             const currentIndex = categories.indexOf(category);
             if (currentIndex + 1 < categories.length) {
@@ -290,6 +292,7 @@
             mainMenu.classList.remove('hidden');
         }
 
+        // Update the summary box
         function updateSummaryBox() {
             const summaryBox = document.getElementById('summary-box');
             let summary = '';
@@ -298,7 +301,7 @@
                 if (selectedItems[category].length > 0) {
                     summary += `Category ${category}:\n`;
                     selectedItems[category].forEach(item => {
-                        summary += `  - ${item.item}: ${item.quantity} pcs\n`;
+                        summary +=   ` - ${item.item}: ${item.quantity} pcs\n`;
                     });
                     summary += '\n';  // Add a blank line between categories
                 }
@@ -307,6 +310,7 @@
             summaryBox.textContent = summary.trim() || 'No items selected.';
         }
 
+        // Download the summary as a text file
         function downloadSummary() {
             const summaryBox = document.getElementById('summary-box').textContent;
             const blob = new Blob([summaryBox], { type: 'text/plain' });
@@ -316,7 +320,18 @@
             link.click();
         }
 
-        generateForms();
+        // Function to delete cookies
+        function clearCookies() {
+            document.cookie = "selectedItems=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+            selectedItems = {}; // Reset selected items
+            updateSummaryBox(); // Update summary box to show no items selected
+            alert('Cookies cleared.');
+        }
+
+        // Generate forms when the page loads
+        window.onload = function() {
+            generateForms();
+        }
     </script>
 </body>
 </html>
