@@ -11,33 +11,31 @@
             margin: 0;
             padding: 0;
             height: 100vh;
-            background: linear-gradient(135deg, #1e3c72 50%, #3498db 50%); /* Blue gradient background split */
+            background: linear-gradient(135deg, #1e3c72 50%, #3498db 50%);
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
             transition: background-color 0.4s ease;
-            flex-direction: column; /* Center content vertically */
+            flex-direction: column;
         }
 
-        /* Container for content with white background */
         .container {
-            background: #ffffff; /* White background */
+            background: #ffffff;
             padding: 30px;
             border-radius: 12px;
             max-width: 700px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
             display: flex;
-            flex-direction: column; /* Flexbox layout for stacking elements */
-            height: 80vh; /* Ensure container takes full screen height */
+            flex-direction: column;
+            height: 80vh;
             width: 100%;
-            justify-content: flex-start; /* Align content to the top */
+            justify-content: flex-start;
             opacity: 0;
             animation: fadeIn 1s forwards;
-            text-align: center; /* Center text inside the container */
+            text-align: center;
         }
 
-        /* Fade-in animation for the container */
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -53,13 +51,12 @@
             margin-bottom: 20px;
         }
 
-        /* Logo style */
         .logo-container {
             width: 100%;
             background-color: #2980b9;
             padding: 20px;
-            margin-bottom: 20px; /* Add some space between the logo and the main content */
-            border-radius: 8px 8px 0 0; /* Rounded corners at the top */
+            margin-bottom: 20px;
+            border-radius: 8px 8px 0 0;
         }
 
         .logo-container img {
@@ -106,7 +103,7 @@
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            background: linear-gradient(135deg, #2980b9, #6bb9f7); /* Blue gradient button */
+            background: linear-gradient(135deg, #2980b9, #6bb9f7);
             color: white;
             margin: 10px 5px;
             transition: all 0.3s ease;
@@ -148,7 +145,7 @@
             white-space: pre-wrap;
             box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
             text-align: left;
-            margin-top: 20px; /* Add margin to create space between content and summary */
+            margin-top: 20px;
             opacity: 0;
             animation: fadeIn 1s forwards;
             animation-delay: 0.3s;
@@ -156,14 +153,6 @@
 
         .hidden {
             display: none;
-        }
-
-        /* Styling for images */
-        .category-image {
-            display: block;
-            margin: 20px 0;
-            max-width: 100%;
-            height: auto;
         }
     </style>
 </head>
@@ -185,7 +174,7 @@
             <button onclick="showCategory('E')" id="categoryE-btn" disabled>Category E</button>
             <button onclick="showCategory('F')" id="categoryF-btn" disabled>Category F</button>
             <button onclick="downloadSummary()">Download file yang kena beli</button>
-            <button onclick="clearCookies()">Delete Cookie</button> <!-- Added Delete Cookie Button -->
+            <button onclick="clearCookies()">Delete Cookie</button>
         </div>
 
         <!-- Category Forms -->
@@ -225,12 +214,13 @@
                             <div class="checkbox-group">
                                 <input type="checkbox" id="item${category}${index}" value="${item}">
                                 <label for="item${category}${index}">${item}</label>
-                                <input type="number" id="quantity${category}${index}" min="1" max="25" placeholder="Qty">
+                                <input type="number" id="quantity${category}${index}" min="1" max="25" placeholder="Qty" oninput="validateQuantity(this, '${category}${index}')">
                             </div>`
                             )
                             .join('')}
                         <button type="button" onclick="submitCategory('${category}')">Submit</button>
                         <button type="button" onclick="skipCategory('${category}')">Skip</button>
+                        <button type="button" onclick="resetCategory('${category}')">Reset</button> <!-- Reset Button -->
                     </form>
                 `;
                 container.appendChild(div);
@@ -256,7 +246,7 @@
                 if (checkbox.checked) {
                     const quantityInput = form.querySelector(`#quantity${category}${index}`);
                     const quantity = quantityInput.value;
-                    if (quantity > 0) {
+                    if (quantity > 0 && quantity <= 25) {
                         itemsList.push({ item: checkbox.value, quantity: parseInt(quantity) });
                     }
                 }
@@ -292,6 +282,26 @@
             mainMenu.classList.remove('hidden');
         }
 
+        // Reset the selections in a category
+        function resetCategory(category) {
+            const form = document.getElementById(`category${category}-form`);
+            const checkboxes = form.querySelectorAll('input[type="checkbox"]');
+            const quantityInputs = form.querySelectorAll('input[type="number"]');
+
+            checkboxes.forEach(checkbox => checkbox.checked = false);
+            quantityInputs.forEach(input => input.value = '');
+
+            selectedItems[category] = [];
+            updateSummaryBox();
+        }
+
+        // Validate quantity input (ensures it doesn't exceed 25)
+        function validateQuantity(input, itemId) {
+            if (parseInt(input.value) > 25) {
+                input.value = 25;
+            }
+        }
+
         // Update the summary box
         function updateSummaryBox() {
             const summaryBox = document.getElementById('summary-box');
@@ -301,9 +311,9 @@
                 if (selectedItems[category].length > 0) {
                     summary += `Category ${category}:\n`;
                     selectedItems[category].forEach(item => {
-                        summary +=   ` - ${item.item}: ${item.quantity} pcs\n`;
+                        summary += ` - ${item.item}: ${item.quantity} pcs\n`;
                     });
-                    summary += '\n';  // Add a blank line between categories
+                    summary += '\n';
                 }
             });
 
@@ -323,8 +333,8 @@
         // Function to delete cookies
         function clearCookies() {
             document.cookie = "selectedItems=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
-            selectedItems = {}; // Reset selected items
-            updateSummaryBox(); // Update summary box to show no items selected
+            selectedItems = {}; 
+            updateSummaryBox(); 
             alert('Cookies cleared.');
         }
 
