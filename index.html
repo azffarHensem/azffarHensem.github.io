@@ -24,11 +24,11 @@
             background: #ffffff;
             padding: 20px;
             border-radius: 12px;
-            max-width: 500px;
+            max-width: 500px; /* Smaller width */
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
-            height: 60vh;
+            height: 60vh; /* Smaller height */
             width: 100%;
             justify-content: flex-start;
             opacity: 0;
@@ -48,8 +48,8 @@
         h2, h3 {
             color: #2c3e50;
             font-weight: 700;
-            margin-bottom: 15px;
-            font-size: 1.2rem;
+            margin-bottom: 15px; /* Smaller margin */
+            font-size: 1.2rem; /* Smaller font size */
         }
 
         .logo-container {
@@ -65,35 +65,37 @@
             height: auto;
         }
 
-        /* Center the checkbox and label */
+        /* Center and align checkbox with quantity in a column */
         .checkbox-group {
             display: flex;
-            flex-direction: column; /* Stack vertically */
-            align-items: center; /* Center horizontally */
+            flex-direction: row; /* Align items horizontally */
+            justify-content: flex-start; /* Align checkbox and label to the left */
+            align-items: center; /* Vertically align checkboxes and labels */
             border-bottom: 1px solid #e0e0e0;
-            padding: 12px 0;
+            padding: 8px 50; /* Smaller padding */
         }
 
         .checkbox-group label {
             font-weight: 600;
             color: #34495e;
-            font-size: 1rem;
-            margin-bottom: 10px; /* Space between label and checkbox */
+            font-size: 0.9rem; /* Smaller font size */
+            margin-right: 12px; /* Add some space between checkbox and label */
+            flex: 1; /* Ensures labels take available space */
         }
 
         input[type="checkbox"] {
-            margin: 5px;
-            transform: scale(1.3); /* Larger checkboxes */
+            margin-right: 8px;
+            transform: scale(1.1); /* Slightly increase checkbox size for better visibility */
         }
 
         input[type="number"] {
-            width: 70px;
-            padding: 6px;
-            margin-top: 8px;
+            width: 60px; /* Smaller width */
+            padding: 6px; /* Smaller padding */
+            margin-left: 8px; /* Smaller margin */
             border-radius: 6px;
             border: 1px solid #dcdcdc;
             text-align: center;
-            font-size: 0.9rem;
+            font-size: 0.9rem; /* Smaller font size */
             transition: border 0.3s ease;
         }
 
@@ -102,15 +104,15 @@
         }
 
         button {
-            padding: 10px 16px;
+            padding: 10px 16px; /* Smaller padding */
             border: none;
             border-radius: 6px;
-            font-size: 14px;
+            font-size: 14px; /* Smaller font size */
             font-weight: 600;
             cursor: pointer;
             background: linear-gradient(135deg, #2980b9, #6bb9f7);
             color: white;
-            margin: 8px 5px;
+            margin: 8px 5px; /* Smaller margin */
             transition: all 0.3s ease;
             opacity: 0;
             animation: fadeIn 1s forwards;
@@ -144,13 +146,13 @@
         .summary-box {
             background-color: #2c3e50;
             color: #ecf0f1;
-            padding: 10px;
+            padding: 10px; /* Smaller padding */
             border-radius: 10px;
             font-family: monospace;
             white-space: pre-wrap;
             box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
             text-align: left;
-            margin-top: 15px;
+            margin-top: 15px; /* Smaller margin */
             opacity: 0;
             animation: fadeIn 1s forwards;
             animation-delay: 0.3s;
@@ -162,6 +164,7 @@
     </style>
 </head>
 <body>
+    <!-- Logo Container -->
     <div class="logo-container">
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTnyvqvlklvTq_nfAfPuUZDHYLHvMSj9C5oA&s" alt="Logo">
     </div>
@@ -169,18 +172,22 @@
     <div class="container">
         <h2>Pilih dengan (Qty 25) ke bawah</h2>
 
+        <!-- Main Menu -->
         <div id="main-menu">
             <button onclick="showCategory('A')" id="categoryA-btn">Category A</button>
-            <button onclick="showCategory('B')" id="categoryB-btn" disabled>Category B</button>
-            <button onclick="showCategory('C')" id="categoryC-btn" disabled>Category C</button>
-            <button onclick="showCategory('D')" id="categoryD-btn" disabled>Category D</button>
-            <button onclick="showCategory('E')" id="categoryE-btn" disabled>Category E</button>
-            <button onclick="showCategory('F')" id="categoryF-btn" disabled>Category F</button>
+            <button onclick="showCategory('B')" id="categoryB-btn" >Category B</button>
+            <button onclick="showCategory('C')" id="categoryC-btn" >Category C</button>
+            <button onclick="showCategory('D')" id="categoryD-btn" >Category D</button>
+            <button onclick="showCategory('E')" id="categoryE-btn" >Category E</button>
+            <button onclick="showCategory('F')" id="categoryF-btn" >Category F</button>
             <button onclick="downloadSummary()">Download file yang kena beli</button>
             <button onclick="clearCookies()">Delete Cookie</button>
         </div>
 
+        <!-- Category Forms -->
         <div id="categories"></div>
+
+        <!-- Summary Box -->
         <div id="summary-box" class="summary-box">No items selected.</div>
     </div>
 
@@ -194,13 +201,13 @@
             E: ['Eggs', 'Flour'],
             F: ['Oil', 'Sugar']
         };
-        let selectedItems = {};
+        let selectedItems = getCookies(); // Get stored items from cookies
 
         // Function to generate category forms
         function generateForms() {
             const container = document.getElementById('categories');
             categories.forEach(category => {
-                selectedItems[category] = [];
+                selectedItems[category] = selectedItems[category] || [];
                 const div = document.createElement('div');
                 div.id = `category${category}`;
                 div.classList.add('category-group');
@@ -212,9 +219,9 @@
                             .map(
                                 (item, index) => `
                             <div class="checkbox-group">
-                                <input type="checkbox" id="item${category}${index}" value="${item}" onclick="setCookie()">
+                                <input type="checkbox" id="item${category}${index}" value="${item}" ${selectedItems[category].some(i => i.item === item) ? 'checked' : ''}>
                                 <label for="item${category}${index}">${item}</label>
-                                <input type="number" id="quantity${category}${index}" min="1" max="25" placeholder="Qty" oninput="validateQuantity(this, '${category}${index}')">
+                                <input type="number" id="quantity${category}${index}" min="1" max="25" placeholder="Qty" value="${selectedItems[category].find(i => i.item === item)?.quantity || ''}" oninput="validateQuantity(this, '${category}${index}')">
                             </div>`
                             )
                             .join('')}
@@ -257,6 +264,7 @@
             }
 
             selectedItems[category] = itemsList;
+            setCookies(); // Save to cookies
             unlockNextCategory(category);
         }
 
@@ -281,7 +289,7 @@
             mainMenu.classList.remove('hidden');
         }
 
-        // Validate quantity input
+        // Validate quantity input (ensures it doesn't exceed 25)
         function validateQuantity(input, itemId) {
             if (parseInt(input.value) > 25) {
                 input.value = 25;
@@ -319,18 +327,36 @@
         // Function to delete cookies
         function clearCookies() {
             document.cookie = "selectedItems=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
-            selectedItems = {};
-            updateSummaryBox();
+            selectedItems = {}; 
+            updateSummaryBox(); 
             alert('Cookies cleared.');
         }
 
-        // Set cookie for 1 month
-        function setCookie() {
+        // Set cookies with expiration of 1 month
+        function setCookies() {
             const expires = new Date();
             expires.setMonth(expires.getMonth() + 1);
-            document.cookie = "selectedItems=" + JSON.stringify(selectedItems) + ";expires=" + expires.toUTCString() + ";path=/";
+            document.cookie = `selectedItems=${JSON.stringify(selectedItems)}; expires=${expires.toUTCString()}; path=/`;
         }
 
+        // Get cookies
+        function getCookies() {
+            const name = "selectedItems=";
+            const decodedCookies = decodeURIComponent(document.cookie);
+            const ca = decodedCookies.split(';');
+            for(let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return JSON.parse(c.substring(name.length, c.length));
+                }
+            }
+            return {};
+        }
+
+        // Generate forms when the page loads
         window.onload = function() {
             generateForms();
         }
