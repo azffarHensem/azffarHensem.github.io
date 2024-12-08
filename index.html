@@ -54,14 +54,26 @@
         const items = {
             A: ['Roti Gardenia Wholemeal', 'Roti Gardenia Biasa', 'Roti Gardenia Kecil Coklat/Vanilla/Jagung', 'Kek Pisang', 'Buah Naga', 'Tembikai', 'Bawang Besar', 'Halia', 'Kentang', 'Karet', 'Cili Hidup', 'Terung', 'Brokoli', 'Ikan Selar', 'Ikan Tenggiri', 'Ayam Wholeleg', 'Lemon', 'Epal Pink', 'Avocado'],
             B: ['Cheesdale', 'Butter', 'Whipping Cream', 'Cream Cheese', 'Sosej Frankfurter', 'Frozen Seafood', 'Frozen Fish Ball', 'Frozen Chicken Ball', 'Frozen Fish', 'Frozen Sotong', 'Frozen Udang', 'Ice Cream', 'Beras Biasa', 'Beras Basmathi', 'Nugget Tempura', 'Santan', 'Virgin Coconut Oil'],
-            C: ['Ajinomoto','Tepung','Macaroni','Spagetti','Telur','Minyak','Gula','Sardin','Kicap','Sos','Sabun Basuh Pinggan Joy','Sabun Basuh Baju','Pelembut Daia'],
+            C: ['Ajinomoto', 'Tepung', 'Macaroni', 'Spagetti', 'Telur', 'Minyak', 'Gula', 'Sardin', 'Kicap', 'Sos', 'Sabun Basuh Pinggan Joy', 'Sabun Basuh Baju', 'Pelembut Daia'],
             D: ['Bedak', 'Cotton Bud'],
             E: ['Eggs', 'Flour'],
             F: ['Oil', 'Sugar']
         };
-        let selectedItems = getCookies(); // Get stored items from cookies
 
-        // Function to generate category forms
+        let selectedItems = getCookies() || {}; // Get stored items from cookies or initialize as empty
+
+        // Function to show the selected category form
+        function showCategory(category) {
+            // Hide all categories first
+            categories.forEach(cat => {
+                document.getElementById(`category${cat}`).style.display = 'none';
+            });
+            
+            // Show the selected category
+            document.getElementById(`category${category}`).style.display = 'block';
+        }
+
+        // Function to generate the category forms dynamically
         function generateForms() {
             const container = document.getElementById('categories');
             categories.forEach(category => {
@@ -70,6 +82,7 @@
                 const div = document.createElement('div');
                 div.id = `category${category}`;
                 div.classList.add('category-group');
+                div.style.display = 'none';  // Hide initially
 
                 div.innerHTML = `
                     <h3>Category ${category}</h3>
@@ -91,7 +104,91 @@
             });
         }
 
-        // Other functions like submitCategory(), showCategory(), updateSummaryBox() etc. remain the same
+        // Function to validate quantity input
+        function validateQuantity(input, id) {
+            const quantity = input.value;
+            if (quantity < 1 || quantity > 25) {
+                alert("Quantity must be between 1 and 25.");
+                input.value = '';
+            }
+        }
+
+        // Function to submit the selected items in a category
+        function submitCategory(category) {
+            const form = document.getElementById(`category${category}-form`);
+            const checkedItems = [];
+
+            items[category].forEach((item, index) => {
+                const checkbox = form.querySelector(`#item${category}${index}`);
+                const quantityInput = form.querySelector(`#quantity${category}${index}`);
+                if (checkbox.checked) {
+                    checkedItems.push({
+                        item: item,
+                        quantity: quantityInput.value || 1
+                    });
+                }
+            });
+
+            // Save selected items in cookies
+            selectedItems[category] = checkedItems;
+            setCookies(selectedItems);  // Function to set cookies
+
+            updateSummaryBox();
+        }
+
+        // Function to skip a category
+        function skipCategory(category) {
+            showCategory(category);  // Simply show the category without saving
+        }
+
+        // Function to update the summary box with the selected items
+        function updateSummaryBox() {
+            const summaryBox = document.getElementById('summary-box');
+            let summaryText = '';
+            Object.keys(selectedItems).forEach(category => {
+                const itemsInCategory = selectedItems[category];
+                if (itemsInCategory.length > 0) {
+                    summaryText += `<h3>Category ${category}:</h3><ul>`;
+                    itemsInCategory.forEach(item => {
+                        summaryText += `<li>${item.item} - Quantity: ${item.quantity}</li>`;
+                    });
+                    summaryText += '</ul>';
+                }
+            });
+            summaryBox.innerHTML = summaryText || 'No items selected.';
+        }
+
+        // Function to download the summary as a file
+        function downloadSummary() {
+            const data = JSON.stringify(selectedItems, null, 2);
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'selected_items.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Function to clear cookies (reset selection)
+        function clearCookies() {
+            document.cookie = "selectedItems=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+            selectedItems = {};
+            updateSummaryBox();
+        }
+
+        // Function to get cookies (simplified for this example)
+        function getCookies() {
+            const cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)selectedItems\s*=\s*([^;]*).*$)|^.*$/, "$1");
+            return cookieValue ? JSON.parse(cookieValue) : {};
+        }
+
+        // Function to set cookies
+        function setCookies(data) {
+            const expires = new Date();
+            expires.setTime(expires.getTime() + (7 * 24 * 60 * 60 * 1000)); // 1 week expiration
+            document.cookie = `selectedItems=${JSON.stringify(data)}; expires=${expires.toUTCString()}; path=/`;
+        }
 
         // Initialize the form
         generateForms();
