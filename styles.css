@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barang yang kena Beli</title>
+    <style>
+        /* Global styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background: linear-gradient(135deg, #EF99A6 50%, #F3BEC4 50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            transition: background-color 0.4s ease;
+            flex-direction: column;
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            background: #F3BEC4;
+            padding: 30px;
+            border-radius: 30px;
+            max-width: 250px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            max-height: 80vh;  /* Make the container scrollable */
+            width: 100%;
+            justify-content: flex-start;
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+            text-align: center;
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        h2, h3 {
+            color: #2c3e50;
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        /* Logo Container */
+        .logo-container {
+            width: 100%;
+            background-color: #EF99A6;
+            padding: 20px 10;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .logo-container img {
+            max-width: 80%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        /* Center and align checkbox with quantity */
+        .checkbox-group {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 8px 20;
+        }
+
+        .checkbox-group label {
+            font-weight: 600;
+            color: #34495e;
+            font-size: 0.9rem;
+            margin-right: 12px;
+            flex: 1;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 8px;
+            transform: scale(1.1);
+        }
+
+        input[type="number"] {
+            width: 60px;
+            padding: 6px;
+            margin-left: 8px;
+            border-radius: 6px;
+            border: 1px solid #dcdcdc;
+            text-align: center;
+            font-size: 0.9rem;
+            transition: border 0.3s ease;
+        }
+
+        input[type="number"]:focus {
+            border: 1px solid #3498db;
+        }
+
+        button {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            background: linear-gradient(135deg, #F3BEC4, #FF6FA2);
+            color: white;
+            margin: 8px 5px;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+            animation-delay: 0.2s;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            transform: scale(1.05);
+        }
+
+        button:disabled {
+            background-color: #dcdcdc;
+            color: #7f8c8d;
+            cursor: not-allowed;
+        }
+
+        /* Make category groups scrollable */
+        .category-group {
+            display: none;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            max-height: 50vh; /* Allow scrolling within the category */
+            overflow-y: auto; /* Scroll only in the category section */
+            padding-right: 10px; /* Prevent scrollbar overlap */
+        }
+
+        .category-group.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .summary-box {
+            background-color: #163C47;
+            color: #ecf0f1;
+            padding: 10px;
+            border-radius: 10px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+            text-align: left;
+            margin-top: 15px;
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+            animation-delay: 0.3s;
+        }
+
+        .hidden {
+            display: none;
+            }
+            
+            /* Main Menu */
+#main-menu {
+    align-items: center;
+    max-height: 60vh; /* Adjust the height as needed */
+    overflow-y: auto; /* Enables vertical scrolling */
+    padding-right: 10px; /* Prevent overlap of the scrollbar */
+    }
+    
+            /* Footer */
+        #footer {
+            bottom: 0px; /* Adjust the distance from the bottom of the page */
+            width: 100%;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #000000;
+            font-weight: 600;
+            opacity: 0.8;
+        }
+
+        #footer p {
+            margin: 0;
+        }
