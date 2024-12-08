@@ -1,385 +1,737 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Barang yang kena Beli</title>
+
     <style>
+
         /* Global styles */
+
         body {
+
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
             margin: 0;
+
             padding: 0;
+
             height: 100vh;
+
             background: linear-gradient(135deg, #EF99A6 50%, #F3BEC4 50%);
+
             display: flex;
+
             justify-content: center;
+
             align-items: center;
+
             overflow: hidden;
+
             transition: background-color 0.4s ease;
+
             flex-direction: column;
+
         }
+
+
 
         .container {
+
             background: #F3BEC4;
+
             padding: 30px;
+
             border-radius: 30px;
+
             max-width: 250px; /* Smaller width */
+
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+
             display: flex;
+
             flex-direction: column;
+
             height: 60vh; /* Smaller height */
+
             width: 100%;
+
             justify-content: flex-start;
+
             opacity: 0;
+
             animation: fadeIn 1s forwards;
+
             text-align: center;
+
         }
+
+
 
         @keyframes fadeIn {
+
             from {
+
                 opacity: 0;
+
             }
+
             to {
+
                 opacity: 1;
+
             }
+
         }
+
+
 
         h2, h3 {
+
             color: #2c3e50;
+
             font-weight: 700;
+
             margin-bottom: 15px; /* Smaller margin */
+
             font-size: 1.2rem; /* Smaller font size */
+
         }
 
-        .logo-container {
-            width: 100%;
-            background-color: #EF99A6;
-            padding: 20px 10; /* Increased padding for better spacing */
-            margin-bottom: 10px; /* Increased space below */
-            border-radius: 10px; /* Rounded corners for the container */
-            display: flex; /* Flexbox for centering */
-            justify-content: center; /* Center image horizontally */
-            align-items: center; /* Center image vertically */
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Soft shadow */
-            transition: all 0.3s ease; /* Smooth transition effect */
-        }
 
-        .logo-container:hover {
-            transform: scale(1.05); /* Slight zoom effect when hovered */
-        }
 
-        .logo-container img {
-            max-width: 80%; /* Ensures the logo is not too large */
-            height: auto;
-            border-radius: 12px; /* Rounded corners on the image */
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); /* Soft shadow around the image */
-            transition: all 0.3s ease; /* Smooth transition for the image */
-        }
+/* Logo Container */
+.logo-container {
+    width: 100%;
+    background-color: #EF99A6;
+    padding: 20px 10; /* Increased padding for better spacing */
+    margin-bottom: 10px; /* Increased space below */
+    border-radius: 10px; /* Rounded corners for the container */
+    display: flex; /* Flexbox for centering */
+    justify-content: center; /* Center image horizontally */
+    align-items: center; /* Center image vertically */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Soft shadow */
+    transition: all 0.3s ease; /* Smooth transition effect */
+}
 
-        .logo-container img:hover {
-            transform: scale(1.1); /* Slight zoom effect when hovered */
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
-        }
+.logo-container:hover {
+    transform: scale(1.05); /* Slight zoom effect when hovered */
+}
+
+/* Logo Image */
+.logo-container img {
+    max-width: 80%; /* Ensures the logo is not too large */
+    height: auto;
+    border-radius: 12px; /* Rounded corners on the image */
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); /* Soft shadow around the image */
+    transition: all 0.3s ease; /* Smooth transition for the image */
+}
+
+/* Logo Image Hover Effect */
+.logo-container img:hover {
+    transform: scale(1.1); /* Slight zoom effect when hovered */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
+}
+
+
 
         /* Center and align checkbox with quantity in a column */
+
         .checkbox-group {
+
             display: flex;
+
             flex-direction: row; /* Align items horizontally */
+
             justify-content: flex-start; /* Align checkbox and label to the left */
+
             align-items: center; /* Vertically align checkboxes and labels */
+
             border-bottom: 1px solid #e0e0e0;
+
             padding: 8px 20; /* Smaller padding */
+
         }
+
+
 
         .checkbox-group label {
+
             font-weight: 600;
+
             color: #34495e;
+
             font-size: 0.9rem; /* Smaller font size */
+
             margin-right: 12px; /* Add some space between checkbox and label */
+
             flex: 1; /* Ensures labels take available space */
+
         }
+
+
 
         input[type="checkbox"] {
+
             margin-right: 8px;
+
             transform: scale(1.1); /* Slightly increase checkbox size for better visibility */
+
         }
+
+
 
         input[type="number"] {
+
             width: 60px; /* Smaller width */
+
             padding: 6px; /* Smaller padding */
+
             margin-left: 8px; /* Smaller margin */
+
             border-radius: 6px;
+
             border: 1px solid #dcdcdc;
+
             text-align: center;
+
             font-size: 0.9rem; /* Smaller font size */
+
             transition: border 0.3s ease;
+
         }
+
+
 
         input[type="number"]:focus {
+
             border: 1px solid #3498db;
+
         }
+
+
 
         button {
+
             padding: 10px 16px; /* Smaller padding */
+
             border: none;
+
             border-radius: 6px;
+
             font-size: 14px; /* Smaller font size */
+
             font-weight: 600;
+
             cursor: pointer;
+
             background: linear-gradient(135deg, #F3BEC4, #FF6FA2);
+
             color: white;
+
             margin: 8px 5px; /* Smaller margin */
+
             transition: all 0.3s ease;
+
+            opacity: 0;
+
+            animation: fadeIn 1s forwards;
+
+            animation-delay: 0.2s;
+
         }
+
+
 
         button:hover {
+
             background: linear-gradient(135deg, #3498db, #2980b9);
+
             transform: scale(1.05);
+
         }
+
+
 
         button:disabled {
+
             background-color: #dcdcdc;
+
             color: #7f8c8d;
+
             cursor: not-allowed;
+
         }
+
+
 
         .category-group {
+
             display: none;
+
             opacity: 0;
+
             transform: translateY(30px);
+
             transition: opacity 0.4s ease, transform 0.4s ease;
+
         }
+
+
 
         .category-group.show {
+
             display: block;
+
             opacity: 1;
+
             transform: translateY(0);
+
         }
+
+
 
         .summary-box {
+
             background-color: #163C47;
+
             color: #ecf0f1;
+
             padding: 10px; /* Smaller padding */
+
             border-radius: 10px;
+
             font-family: monospace;
+
             white-space: pre-wrap;
+
             box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+
             text-align: left;
+
             margin-top: 15px; /* Smaller margin */
+
+            opacity: 0;
+
+            animation: fadeIn 1s forwards;
+
+            animation-delay: 0.3s;
+
         }
+
+
 
         .hidden {
+
             display: none;
+
         }
+
     </style>
+
 </head>
+
 <body>
+
     <!-- Logo Container -->
+
     <div class="logo-container">
+
         <img src="https://raw.githubusercontent.com/azffarHensem/azffarHensem.github.io/refs/heads/main/png1.jpg" alt="Logo">
+
     </div>
+
+
 
     <div class="container">
+
+        
+
+
         <!-- Main Menu -->
+
         <div id="main-menu">
+
             <button onclick="showCategory('A')" id="categoryA-btn">Category A</button>
-            <button onclick="showCategory('B')" id="categoryB-btn">Category B</button>
-            <button onclick="showCategory('C')" id="categoryC-btn">Category C</button>
-            <button onclick="showCategory('D')" id="categoryD-btn">Category D</button>
-            <button onclick="showCategory('E')" id="categoryE-btn">Category E</button>
-            <button onclick="showCategory('F')" id="categoryF-btn">Category F</button>
+
+            <button onclick="showCategory('B')" id="categoryB-btn" >Category B</button>
+
+            <button onclick="showCategory('C')" id="categoryC-btn" >Category C</button>
+
+            <button onclick="showCategory('D')" id="categoryD-btn" >Category D</button>
+
+            <button onclick="showCategory('E')" id="categoryE-btn" >Category E</button>
+
+            <button onclick="showCategory('F')" id="categoryF-btn" >Category F</button>
+
             <button onclick="downloadSummary()">Download file yang kena beli</button>
+
             <button onclick="clearCookies()">Delete Cookie</button>
+
         </div>
 
+
+
         <!-- Category Forms -->
+
         <div id="categories"></div>
 
+
+
         <!-- Summary Box -->
+
         <div id="summary-box" class="summary-box">No items selected.</div>
+
     </div>
 
+
+
     <script>
+
         const categories = ['A', 'B', 'C', 'D', 'E', 'F'];
+
         const items = {
-            A: [
-                { name: 'Fish', subcategories: ['Salmon', 'Tuna', 'Mackerel'] },
-                { name: 'Dragon Fruit', subcategories: ['Red', 'White'] }
-            ],
-            B: [
-                { name: 'Chicken', subcategories: ['Free-range', 'Organic', 'Frozen'] },
-                { name: 'Mutton', subcategories: ['Fresh', 'Frozen'] }
-            ],
-            C: [
-                { name: 'Rice', subcategories: ['Basmati', 'Jasmine', 'Brown'] },
-                { name: 'Beans', subcategories: ['Black Beans', 'Kidney Beans', 'Chickpeas'] }
-            ],
-            D: [
-                { name: 'Milk', subcategories: ['Full-fat', 'Low-fat', 'Skimmed'] },
-                { name: 'Cheese', subcategories: ['Cheddar', 'Mozzarella', 'Parmesan'] }
-            ],
-            E: [
-                { name: 'Eggs', subcategories: ['Organic', 'Brown', 'White'] },
-                { name: 'Flour', subcategories: ['Whole Wheat', 'All-purpose'] }
-            ],
-            F: [
-                { name: 'Oil', subcategories: ['Olive', 'Canola', 'Sunflower'] },
-                { name: 'Sugar', subcategories: ['White', 'Brown', 'Powdered'] }
-            ]
+
+            A: ['Roti Gardenia Wholemeal', 'Roti Gardenia Biasa', 'Roti Gardenia Kecil Coklat/Vanilla/Jagung', 'Kek Pisang' , 'Buah Naga' , 'Tembikai', 'Bawang Besar', 'Halia ', 'Kentang ', 'Karet', 'Cili Hidup', 'Terung', 'Brokoli', 'Ikan Selar', 'Ikan Tenggiri', 'Ayam Wholeleg', 'Lemon', 'Epal Pink', 'Avocado'],
+
+            B: ['Cheesdale','Butter','Whipping Cream','Cream Cheese','Sosej Frankfurter','Frozen Seafood','Frozen Fish Ball','Frozen Chicken Ball','Frozen Chicken Ball','Frozen Fish','Frozen Sotong','Frozen Udang','Ice Cream','Beras Biasa','Beras Basmathi','Nugget Tempura','Santan','Virgin Coconut Oil'],
+
+            C: ['Rice', 'Beans'],
+
+            D: ['Milk', 'Cheese'],
+
+            E: ['Eggs', 'Flour'],
+
+            F: ['Oil', 'Sugar']
+
         };
+
         let selectedItems = getCookies(); // Get stored items from cookies
 
+
+
+        // Function to generate category forms
+
         function generateForms() {
+
             const container = document.getElementById('categories');
+
             categories.forEach(category => {
+
                 selectedItems[category] = selectedItems[category] || [];
+
                 const div = document.createElement('div');
+
                 div.id = `category${category}`;
+
                 div.classList.add('category-group');
 
+
+
                 div.innerHTML = `
+
                     <h3>Category ${category}</h3>
+
                     <form id="category${category}-form">
+
                         ${items[category]
+
                             .map(
+
                                 (item, index) => `
-                                    <div class="checkbox-group">
-                                        <label>${item.name}</label>
-                                        ${item.subcategories.map(
-                                            (sub, subIndex) => `
-                                                <div>
-                                                    <input type="checkbox" id="item${category}${index}${subIndex}" value="${sub}" ${selectedItems[category].some(i => i.item === sub) ? 'checked' : ''}>
-                                                    <label for="item${category}${index}${subIndex}">${sub}</label>
-                                                    <input type="number" id="quantity${category}${index}${subIndex}" min="1" max="25" placeholder="Qty" value="${selectedItems[category].find(i => i.item === sub)?.quantity || ''}" oninput="validateQuantity(this, '${category}${index}${subIndex}')">
-                                                </div>`).join('')
-                                        }
-                                    </div>`
-                            ).join('')}
+
+                            <div class="checkbox-group">
+
+                                <input type="checkbox" id="item${category}${index}" value="${item}" ${selectedItems[category].some(i => i.item === item) ? 'checked' : ''}>
+
+                                <label for="item${category}${index}">${item}</label>
+
+                                <input type="number" id="quantity${category}${index}" min="1" max="25" placeholder="Qty" value="${selectedItems[category].find(i => i.item === item)?.quantity || ''}" oninput="validateQuantity(this, '${category}${index}')">
+
+                            </div>`
+
+                            )
+
+                            .join('')}
+
                         <button type="button" onclick="submitCategory('${category}')">Submit</button>
+
                         <button type="button" onclick="skipCategory('${category}')">Home</button>
+
                     </form>
+
                 `;
+
                 container.appendChild(div);
+
             });
+
         }
+
+
+
+        // Show category form
 
         function showCategory(category) {
+
             const mainMenu = document.getElementById('main-menu');
+
             const categoryDiv = document.getElementById(`category${category}`);
+
+
 
             mainMenu.classList.add('hidden');
+
             categoryDiv.classList.add('show');
+
         }
+
+
+
+        // Submit selected items in category
 
         function submitCategory(category) {
+
             const form = document.getElementById(`category${category}-form`);
+
             const checkboxes = form.querySelectorAll('input[type="checkbox"]');
+
             const itemsList = [];
 
+
+
             checkboxes.forEach((checkbox, index) => {
+
                 if (checkbox.checked) {
+
                     const quantityInput = form.querySelector(`#quantity${category}${index}`);
+
                     const quantity = quantityInput.value;
+
                     if (quantity > 0 && quantity <= 25) {
+
                         itemsList.push({ item: checkbox.value, quantity: parseInt(quantity) });
+
                     }
+
                 }
+
             });
+
+
 
             if (itemsList.length === 0) {
+
                 alert(`Please select at least one item from Category ${category} or use the "Skip" button.`);
+
                 return;
+
             }
+
+
 
             selectedItems[category] = itemsList;
+
             setCookies(); // Save to cookies
+
             unlockNextCategory(category);
+
         }
+
+
+
+        // Skip the category
 
         function skipCategory(category) {
+
             unlockNextCategory(category);
+
         }
+
+
+
+        // Unlock the next category and update the UI
 
         function unlockNextCategory(category) {
+
             const currentIndex = categories.indexOf(category);
+
             if (currentIndex + 1 < categories.length) {
+
                 const nextCategory = categories[currentIndex + 1];
+
                 document.getElementById(`category${nextCategory}-btn`).disabled = false;
+
             }
+
+
 
             updateSummaryBox();
+
             const mainMenu = document.getElementById('main-menu');
+
             const categoryDiv = document.getElementById(`category${category}`);
 
+
+
             categoryDiv.classList.remove('show');
+
             mainMenu.classList.remove('hidden');
+
         }
+
+
+
+        // Validate quantity input (ensures it doesn't exceed 25)
 
         function validateQuantity(input, itemId) {
+
             if (parseInt(input.value) > 25) {
+
                 input.value = 25;
+
             }
+
         }
+
+
+
+        // Update the summary box
 
         function updateSummaryBox() {
+
             const summaryBox = document.getElementById('summary-box');
+
             let summary = '';
 
+
+
             categories.forEach(category => {
+
                 if (selectedItems[category].length > 0) {
+
                     summary += `Category ${category}:\n`;
+
                     selectedItems[category].forEach(item => {
+
                         summary += ` - ${item.item}: ${item.quantity} pcs\n`;
+
                     });
+
                     summary += '\n';
+
                 }
+
             });
 
+
+
             summaryBox.textContent = summary.trim() || 'No items selected.';
+
         }
+
+
+
+        // Download the summary as a text file
 
         function downloadSummary() {
+
             const summaryBox = document.getElementById('summary-box').textContent;
+
             const blob = new Blob([summaryBox], { type: 'text/plain' });
+
             const link = document.createElement('a');
+
             link.href = URL.createObjectURL(blob);
+
             link.download = 'barang-kena-beli.txt';
+
             link.click();
+
         }
+
+
+
+        // Function to delete cookies
 
         function clearCookies() {
+
             document.cookie = "selectedItems=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+
             selectedItems = {}; 
+
             updateSummaryBox(); 
+
             alert('Cookies cleared.');
+
         }
+
+
+
+        // Set cookies with expiration of 1 month
 
         function setCookies() {
+
             const expires = new Date();
+
             expires.setMonth(expires.getMonth() + 1);
+
             document.cookie = `selectedItems=${JSON.stringify(selectedItems)}; expires=${expires.toUTCString()}; path=/`;
+
         }
+
+
+
+        // Get cookies
 
         function getCookies() {
+
             const name = "selectedItems=";
+
             const decodedCookies = decodeURIComponent(document.cookie);
+
             const ca = decodedCookies.split(';');
+
             for(let i = 0; i < ca.length; i++) {
+
                 let c = ca[i];
+
                 while (c.charAt(0) == ' ') {
+
                     c = c.substring(1);
+
                 }
+
                 if (c.indexOf(name) == 0) {
+
                     return JSON.parse(c.substring(name.length, c.length));
+
                 }
+
             }
+
             return {};
+
         }
 
+
+
+        // Generate forms when the page loads
+
         window.onload = function() {
+
             generateForms();
+
         }
+
     </script>
+
 </body>
+
 </html>
