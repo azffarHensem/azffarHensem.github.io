@@ -168,16 +168,32 @@
             animation: fadeIn 1s forwards;
             animation-delay: 0.3s;
         }
-/* Main Menu */
+
+        .hidden {
+            display: none;
+            }
+            
+            /* Main Menu */
 #main-menu {
     align-items: center;
     max-height: 60vh; /* Adjust the height as needed */
     overflow-y: auto; /* Enables vertical scrolling */
     padding-right: 10px; /* Prevent overlap of the scrollbar */
-}
+    }
+    
+            /* Footer */
+        #footer {
+            bottom: 0px; /* Adjust the distance from the bottom of the page */
+            width: 100%;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #000000;
+            font-weight: 600;
+            opacity: 0.8;
+        }
 
-        .hidden {
-            display: none;
+        #footer p {
+            margin: 0;
         }
     </style>
 </head>
@@ -202,12 +218,29 @@
 
         <!-- Category Forms -->
         <div id="categories"></div>
+        
 
         <!-- Summary Box -->
         <div id="summary-box" class="summary-box">No items selected.</div>
     </div>
+    
+    <!-- Footer -->
+    <div id="footer">
+        <p>Created by WebAzffar</p>
+    </div>
+    
+        <!-- Footer -->
+    <div id="footer">
+        <p>Helped by ChatGPT</p>
+    </div>
+    
+            <!-- Footer -->
+    <div id="footer">
+        <p>List by Ammar Hazman</p>
+    </div>
 
     <script>
+    	
         const categories = ['A', 'B', 'C', 'D', 'E', 'F'];
         const items = {
             A: ['Roti Gardenia Wholemeal', 'Roti Gardenia Biasa', 'Roti Gardenia Kecil Coklat/Vanilla/Jagung', 'Kek Pisang', 'Buah Naga', 'Tembikai', 'Bawang Besar', 'Halia', 'Kentang', 'Karet', 'Cili Hidup', 'Terung', 'Brokoli', 'Ikan Selar', 'Ikan Tenggiri', 'Ayam Wholeleg', 'Lemon', 'Epal Pink', 'Avocado'],
@@ -218,6 +251,7 @@
             F: ['Oil', 'Sugar']
         };
         let selectedItems = getCookies(); // Get stored items from cookies
+        
 
         // Function to generate category forms
         function generateForms() {
@@ -379,6 +413,7 @@
 
         // Initialize the form
         generateForms();
+        
     </script>
 </body>
 </html>
