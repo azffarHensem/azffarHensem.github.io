@@ -18,102 +18,91 @@
             overflow: hidden;
             transition: background-color 0.4s ease;
             flex-direction: column;
+            scroll-behavior: smooth;
         }
 
         .container {
             background: #F3BEC4;
             padding: 30px;
             border-radius: 30px;
-            max-width: 250px; /* Smaller width */
+            max-width: 250px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
-            height: 60vh; /* Smaller height */
+            max-height: 80vh;  /* Make the container scrollable */
             width: 100%;
             justify-content: flex-start;
             opacity: 0;
             animation: fadeIn 1s forwards;
             text-align: center;
+            overflow-y: auto; /* Enable vertical scrolling */
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         h2, h3 {
             color: #2c3e50;
             font-weight: 700;
-            margin-bottom: 15px; /* Smaller margin */
-            font-size: 1.2rem; /* Smaller font size */
+            margin-bottom: 15px;
+            font-size: 1.2rem;
         }
 
         /* Logo Container */
         .logo-container {
             width: 100%;
             background-color: #EF99A6;
-            padding: 20px 10; /* Increased padding for better spacing */
-            margin-bottom: 10px; /* Increased space below */
-            border-radius: 10px; /* Rounded corners for the container */
-            display: flex; /* Flexbox for centering */
-            justify-content: center; /* Center image horizontally */
-            align-items: center; /* Center image vertically */
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Soft shadow */
-            transition: all 0.3s ease; /* Smooth transition effect */
-        }
-
-        .logo-container:hover {
-            transform: scale(1.05); /* Slight zoom effect when hovered */
+            padding: 20px 10;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
         }
 
         .logo-container img {
-            max-width: 80%; /* Ensures the logo is not too large */
+            max-width: 80%;
             height: auto;
-            border-radius: 12px; /* Rounded corners on the image */
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); /* Soft shadow around the image */
-            transition: all 0.3s ease; /* Smooth transition for the image */
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
         }
 
-        .logo-container img:hover {
-            transform: scale(1.1); /* Slight zoom effect when hovered */
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
-        }
-
-        /* Center and align checkbox with quantity in a column */
+        /* Center and align checkbox with quantity */
         .checkbox-group {
             display: flex;
-            flex-direction: row; /* Align items horizontally */
-            justify-content: flex-start; /* Align checkbox and label to the left */
-            align-items: center; /* Vertically align checkboxes and labels */
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
             border-bottom: 1px solid #e0e0e0;
-            padding: 8px 20; /* Smaller padding */
+            padding: 8px 20;
         }
 
         .checkbox-group label {
             font-weight: 600;
             color: #34495e;
-            font-size: 0.9rem; /* Smaller font size */
-            margin-right: 12px; /* Add some space between checkbox and label */
-            flex: 1; /* Ensures labels take available space */
+            font-size: 0.9rem;
+            margin-right: 12px;
+            flex: 1;
         }
 
         input[type="checkbox"] {
             margin-right: 8px;
-            transform: scale(1.1); /* Slightly increase checkbox size for better visibility */
+            transform: scale(1.1);
         }
 
         input[type="number"] {
-            width: 60px; /* Smaller width */
-            padding: 6px; /* Smaller padding */
-            margin-left: 8px; /* Smaller margin */
+            width: 60px;
+            padding: 6px;
+            margin-left: 8px;
             border-radius: 6px;
             border: 1px solid #dcdcdc;
             text-align: center;
-            font-size: 0.9rem; /* Smaller font size */
+            font-size: 0.9rem;
             transition: border 0.3s ease;
         }
 
@@ -122,15 +111,15 @@
         }
 
         button {
-            padding: 10px 16px; /* Smaller padding */
+            padding: 10px 16px;
             border: none;
             border-radius: 6px;
-            font-size: 14px; /* Smaller font size */
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             background: linear-gradient(135deg, #F3BEC4, #FF6FA2);
             color: white;
-            margin: 8px 5px; /* Smaller margin */
+            margin: 8px 5px;
             transition: all 0.3s ease;
             opacity: 0;
             animation: fadeIn 1s forwards;
@@ -148,14 +137,15 @@
             cursor: not-allowed;
         }
 
-        /* Category Group Styling */
+        /* Make category groups scrollable */
         .category-group {
             display: none;
             opacity: 0;
             transform: translateY(30px);
             transition: opacity 0.4s ease, transform 0.4s ease;
-            max-height: 300px; /* Max height for scrollable category */
-            overflow-y: auto; /* Allow scrolling */
+            max-height: 50vh; /* Allow scrolling within the category */
+            overflow-y: auto; /* Scroll only in the category section */
+            padding-right: 10px; /* Prevent scrollbar overlap */
         }
 
         .category-group.show {
@@ -167,17 +157,24 @@
         .summary-box {
             background-color: #163C47;
             color: #ecf0f1;
-            padding: 10px; /* Smaller padding */
+            padding: 10px;
             border-radius: 10px;
             font-family: monospace;
             white-space: pre-wrap;
             box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
             text-align: left;
-            margin-top: 15px; /* Smaller margin */
+            margin-top: 15px;
             opacity: 0;
             animation: fadeIn 1s forwards;
             animation-delay: 0.3s;
         }
+/* Main Menu */
+#main-menu {
+    align-items: center;
+    max-height: 60vh; /* Adjust the height as needed */
+    overflow-y: auto; /* Enables vertical scrolling */
+    padding-right: 10px; /* Prevent overlap of the scrollbar */
+}
 
         .hidden {
             display: none;
@@ -213,14 +210,13 @@
     <script>
         const categories = ['A', 'B', 'C', 'D', 'E', 'F'];
         const items = {
-            A: ['Roti Gardenia Wholemeal', 'Roti Gardenia Biasa', 'Roti Gardenia Kecil Coklat/Vanilla/Jagung', 'Kek Pisang' , 'Buah Naga' , 'Tembikai', 'Bawang Besar', 'Halia ', 'Kentang ', 'Karet', 'Cili Hidup', 'Terung', 'Brokoli', 'Ikan Selar', 'Ikan Tenggiri', 'Ayam Wholeleg', 'Lemon', 'Epal Pink', 'Avocado'],
-            B: ['Cheesdale','Butter','Whipping Cream','Cream Cheese','Sosej Frankfurter','Frozen Seafood','Frozen Fish Ball','Frozen Chicken Ball','Frozen Chicken Ball','Frozen Fish','Frozen Sotong','Frozen Udang','Ice Cream','Beras Biasa','Beras Basmathi','Nugget Tempura','Santan','Virgin Coconut Oil'],
+            A: ['Roti Gardenia Wholemeal', 'Roti Gardenia Biasa', 'Roti Gardenia Kecil Coklat/Vanilla/Jagung', 'Kek Pisang', 'Buah Naga', 'Tembikai', 'Bawang Besar', 'Halia', 'Kentang', 'Karet', 'Cili Hidup', 'Terung', 'Brokoli', 'Ikan Selar', 'Ikan Tenggiri', 'Ayam Wholeleg', 'Lemon', 'Epal Pink', 'Avocado'],
+            B: ['Cheesdale', 'Butter', 'Whipping Cream', 'Cream Cheese', 'Sosej Frankfurter', 'Frozen Seafood', 'Frozen Fish Ball', 'Frozen Chicken Ball', 'Frozen Fish', 'Frozen Sotong', 'Frozen Udang', 'Ice Cream', 'Beras Biasa', 'Beras Basmathi', 'Nugget Tempura', 'Santan', 'Virgin Coconut Oil'],
             C: ['Rice', 'Beans'],
             D: ['Milk', 'Cheese'],
             E: ['Eggs', 'Flour'],
             F: ['Oil', 'Sugar']
         };
-
         let selectedItems = getCookies(); // Get stored items from cookies
 
         // Function to generate category forms
@@ -228,6 +224,7 @@
             const container = document.getElementById('categories');
             categories.forEach(category => {
                 selectedItems[category] = selectedItems[category] || [];
+
                 const div = document.createElement('div');
                 div.id = `category${category}`;
                 div.classList.add('category-group');
@@ -235,15 +232,17 @@
                 div.innerHTML = `
                     <h3>Category ${category}</h3>
                     <form id="category${category}-form">
-                        ${items[category].map((item, index) => `
-                            <div class="checkbox-group">
-                                <input type="checkbox" id="item${category}${index}" value="${item}" ${selectedItems[category].some(i => i.item === item) ? 'checked' : ''}>
-                                <label for="item${category}${index}">${item}</label>
-                                <input type="number" id="quantity${category}${index}" min="1" max="25" placeholder="Qty" value="${selectedItems[category].find(i => i.item === item)?.quantity || ''}" oninput="validateQuantity(this, '${category}${index}')">
-                            </div>
-                        `).join('')}
+                        ${items[category]
+                            .map((item, index) => `
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="item${category}${index}" value="${item}" ${selectedItems[category].some(i => i.item === item) ? 'checked' : ''}>
+                                    <label for="item${category}${index}">${item}</label>
+                                    <input type="number" id="quantity${category}${index}" min="1" max="25" placeholder="Qty" value="${selectedItems[category].find(i => i.item === item)?.quantity || ''}" oninput="validateQuantity(this, '${category}${index}')">
+                                </div>
+                            `)
+                            .join('')}
                         <button type="button" onclick="submitCategory('${category}')">Submit</button>
-                        <button type="button" onclick="skipCategory('${category}')">Home</button>
+                        <button type="button" onclick="skipCategory('${category}')">Skip</button>
                     </form>
                 `;
                 container.appendChild(div);
@@ -254,9 +253,9 @@
         function showCategory(category) {
             const mainMenu = document.getElementById('main-menu');
             const categoryDiv = document.getElementById(`category${category}`);
-
             mainMenu.classList.add('hidden');
             categoryDiv.classList.add('show');
+            scrollToTop();
         }
 
         // Submit selected items in category
@@ -275,19 +274,32 @@
                 }
             });
 
+            // If no items selected, show alert and exit
             if (itemsList.length === 0) {
-                alert(`Please select at least one item from Category ${category} or use the "Skip" button.`);
-                return;
             }
 
             selectedItems[category] = itemsList;
-            setCookies(); // Save to cookies
-            unlockNextCategory(category);
+            setCookies();  // Save the selected items to cookies
+            unlockNextCategory(category);  // Move to the next category
+            goToMainMenu();  // Return to the main menu
         }
 
         // Skip the category
         function skipCategory(category) {
             unlockNextCategory(category);
+            goToMainMenu();  // Return to the main menu
+        }
+
+        // Function to go back to the main menu
+        function goToMainMenu() {
+            const mainMenu = document.getElementById('main-menu');
+            const categoryDivs = document.querySelectorAll('.category-group');
+            
+            // Hide all category divs
+            categoryDivs.forEach(div => div.classList.remove('show'));
+
+            // Show the main menu
+            mainMenu.classList.remove('hidden');
         }
 
         // Unlock the next category and update the UI
@@ -295,21 +307,14 @@
             const currentIndex = categories.indexOf(category);
             if (currentIndex + 1 < categories.length) {
                 const nextCategory = categories[currentIndex + 1];
-                document.getElementById(`category${nextCategory}-btn`).disabled = false;
+                document.getElementById(`category${nextCategory}`).classList.add('show');
             }
-
             updateSummaryBox();
-            const mainMenu = document.getElementById('main-menu');
-            const categoryDiv = document.getElementById(`category${category}`);
-            categoryDiv.classList.remove('show');
-            mainMenu.classList.remove('hidden');
         }
 
-        // Validate quantity input (ensures it doesn't exceed 25)
-        function validateQuantity(input, itemId) {
-            if (parseInt(input.value) > 25) {
-                input.value = 25;
-            }
+        // Scroll to top
+        function scrollToTop() {
+            window.scrollTo(0, 0);
         }
 
         // Update the summary box
@@ -344,7 +349,7 @@
         function clearCookies() {
             document.cookie = "selectedItems=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
             selectedItems = {}; 
-            updateSummaryBox(); 
+            updateSummaryBox();
             alert('Cookies cleared.');
         }
 
@@ -369,13 +374,11 @@
                     return JSON.parse(c.substring(name.length, c.length));
                 }
             }
-            return {};
+            return {}; 
         }
 
-        // Generate forms when the page loads
-        window.onload = function() {
-            generateForms();
-        }
+        // Initialize the form
+        generateForms();
     </script>
 </body>
 </html>
