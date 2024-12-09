@@ -213,7 +213,6 @@
             <button onclick="showCategory('E')" id="categoryE-btn">Category E</button>
             <button onclick="showCategory('F')" id="categoryF-btn">Category F</button>
             <button onclick="downloadSummary()">Download file yang kena beli</button>
-            <button onclick="clearCookies()">Delete Cookie</button>
         </div>
 
         <!-- Category Forms -->
@@ -226,13 +225,7 @@
     <!-- Footer -->
     <div id="footer">
         <p>Created by WebAzffar</p>
-    </div>
-
-    <div id="footer">
         <p>Helped by ChatGPT</p>
-    </div>
-
-    <div id="footer">
         <p>List by Ammar Hazman</p>
     </div>
 
@@ -242,9 +235,9 @@
             A: ['Roti Gardenia Wholemeal', 'Roti Gardenia Biasa', 'Roti Gardenia Kecil Coklat/Vanilla/Jagung', 'Kek Pisang', 'Buah Naga', 'Tembikai', 'Bawang Besar', 'Halia', 'Kentang', 'Karet', 'Cili Hidup', 'Terung', 'Brokoli', 'Ikan Selar', 'Ikan Tenggiri', 'Ayam Wholeleg', 'Lemon', 'Epal Pink', 'Avocado'],
             B: ['Cheesdale', 'Butter', 'Whipping Cream', 'Cream Cheese', 'Sosej Frankfurter', 'Frozen Seafood', 'Frozen Fish Ball', 'Frozen Chicken Ball', 'Frozen Fish', 'Frozen Sotong', 'Frozen Udang', 'Ice Cream', 'Beras Biasa', 'Beras Basmathi', 'Nugget Tempura', 'Santan', 'Virgin Coconut Oil'],
             C: ['Ajinomoto','Tepung','Macaroni','Spagetti','Telur','Minyak','Gula','Sardin','Kicap','Sos','Sabun Basuh Pinggan Joy','Sabun Basuh Baju','Pelembut Daia'],
-            D: ['Bedak', 'Cotton Bud'],
+            D: ['Bedak Budak Johnson', 'Cotton Bud' , 'Syampoo Budak Johnson'],
             E: ['Kopi','Susu Pekat','Susu Cair','Teh 3 in 1','Biskut Oatkrunch','Biskut Oreo','Biskut Julies','Cornflakes Cococrunch','Cornflakes Honeystar','Cornflakes Kellogs','Susu Full Cream','Plastik Sampah S','Plastik Sampah M','Plastik Sampah L','Plastik Sampah XL','Foil','Baking Paper',],
-            F: ['Oil', 'Sugar']
+            F: ['Ubat Gigi Colgate','Ubat Gigi Hala Gel','Berus Gigi Abah/Mama','Berus Gigi Arissa/Rayyan','Berus Gigi Aqeel/Aaira','Palmolive Refill','Lux Refill','Shampoo Shayla Pink','Shampoo Shayla Biru',]
         };
 
         let selectedItems = getCookies(); 
@@ -402,7 +395,7 @@
             // Loop through each category and add items (including custom items) to the summary
             categories.forEach(category => {
                 selectedItems[category]?.forEach(item => {
-                    summaryText += `Category ${category}: ${item.item} - ${item.quantity} pcs\n`;
+                    summaryText += ` ${category}: ${item.item} - ${item.quantity} pcs\n`;
                 });
             });
 
