@@ -171,17 +171,17 @@
 
         .hidden {
             display: none;
-            }
-            
-            /* Main Menu */
-#main-menu {
-    align-items: center;
-    max-height: 60vh; /* Adjust the height as needed */
-     /* Enables vertical scrolling */
-    padding-right: 10px; /* Prevent overlap of the scrollbar */
-    }
-    
-            /* Footer */
+        }
+
+        /* Main Menu */
+        #main-menu {
+            align-items: center;
+            max-height: 60vh; /* Adjust the height as needed */
+            overflow-y: auto; /* Enables vertical scrolling */
+            padding-right: 10px; /* Prevent overlap of the scrollbar */
+        }
+
+        /* Footer */
         #footer {
             bottom: 0px; /* Adjust the distance from the bottom of the page */
             width: 100%;
@@ -213,13 +213,11 @@
             <button onclick="showCategory('E')" id="categoryE-btn">Category E</button>
             <button onclick="showCategory('F')" id="categoryF-btn">Category F</button>
             <button onclick="downloadSummary()">Download file yang kena beli</button>
-            <button onclick="clearCookies()">Delete Cookie</button>
         </div>
 
         <!-- Category Forms -->
         <div id="categories"></div>
         
-
         <!-- Summary Box -->
         <div id="summary-box" class="summary-box">No items selected.</div>
     </div>
@@ -227,31 +225,22 @@
     <!-- Footer -->
     <div id="footer">
         <p>Created by WebAzffar</p>
-    </div>
-    
-        <!-- Footer -->
-    <div id="footer">
         <p>Helped by ChatGPT</p>
-    </div>
-    
-            <!-- Footer -->
-    <div id="footer">
         <p>List by Ammar Hazman</p>
     </div>
 
     <script>
-    	
         const categories = ['A', 'B', 'C', 'D', 'E', 'F'];
         const items = {
             A: ['Roti Gardenia Wholemeal', 'Roti Gardenia Biasa', 'Roti Gardenia Kecil Coklat/Vanilla/Jagung', 'Kek Pisang', 'Buah Naga', 'Tembikai', 'Bawang Besar', 'Halia', 'Kentang', 'Karet', 'Cili Hidup', 'Terung', 'Brokoli', 'Ikan Selar', 'Ikan Tenggiri', 'Ayam Wholeleg', 'Lemon', 'Epal Pink', 'Avocado'],
             B: ['Cheesdale', 'Butter', 'Whipping Cream', 'Cream Cheese', 'Sosej Frankfurter', 'Frozen Seafood', 'Frozen Fish Ball', 'Frozen Chicken Ball', 'Frozen Fish', 'Frozen Sotong', 'Frozen Udang', 'Ice Cream', 'Beras Biasa', 'Beras Basmathi', 'Nugget Tempura', 'Santan', 'Virgin Coconut Oil'],
             C: ['Ajinomoto','Tepung','Macaroni','Spagetti','Telur','Minyak','Gula','Sardin','Kicap','Sos','Sabun Basuh Pinggan Joy','Sabun Basuh Baju','Pelembut Daia'],
-            D: ['Bedak', 'Cotton Bud'],
-            E: ['Eggs', 'Flour'],
-            F: ['Oil', 'Sugar']
+            D: ['Bedak Budak Johnson', 'Cotton Bud' , 'Syampoo Budak Johnson'],
+            E: ['Kopi','Susu Pekat','Susu Cair','Teh 3 in 1','Biskut Oatkrunch','Biskut Oreo','Biskut Julies','Cornflakes Cococrunch','Cornflakes Honeystar','Cornflakes Kellogs','Susu Full Cream','Plastik Sampah S','Plastik Sampah M','Plastik Sampah L','Plastik Sampah XL','Foil','Baking Paper',],
+            F: ['Ubat Gigi Colgate','Ubat Gigi Hala Gel','Berus Gigi Abah/Mama','Berus Gigi Arissa/Rayyan','Berus Gigi Aqeel/Aaira','Palmolive Refill','Lux Refill','Shampoo Shayla Pink','Shampoo Shayla Biru',]
         };
-        let selectedItems = getCookies(); // Get stored items from cookies
-        
+
+        let selectedItems = getCookies(); 
 
         // Function to generate category forms
         function generateForms() {
@@ -278,120 +267,37 @@
                         <button type="button" onclick="submitCategory('${category}')">Submit</button>
                         <button type="button" onclick="skipCategory('${category}')">Skip</button>
                     </form>
+                    
+                    <div>
+                        <input type="text" id="custom-item${category}" placeholder="Add custom item">
+                        <input type="number" id="custom-quantity${category}" min="1" max="25" placeholder="Qty">
+                        <button type="button" onclick="addCustomItem('${category}')">Add Custom Item</button>
+                    </div>
                 `;
                 container.appendChild(div);
             });
         }
 
-        // Show category form
+        // Show category form when category button is clicked
         function showCategory(category) {
-            const mainMenu = document.getElementById('main-menu');
             const categoryDiv = document.getElementById(`category${category}`);
-            mainMenu.classList.add('hidden');
-            categoryDiv.classList.add('show');
-            scrollToTop();
-        }
-
-        // Submit selected items in category
-        function submitCategory(category) {
-            const form = document.getElementById(`category${category}-form`);
-            const checkboxes = form.querySelectorAll('input[type="checkbox"]');
-            const itemsList = [];
-
-            checkboxes.forEach((checkbox, index) => {
-                if (checkbox.checked) {
-                    const quantityInput = form.querySelector(`#quantity${category}${index}`);
-                    const quantity = quantityInput.value;
-                    if (quantity > 0 && quantity <= 25) {
-                        itemsList.push({ item: checkbox.value, quantity: parseInt(quantity) });
-                    }
-                }
-            });
-
-            // If no items selected, show alert and exit
-            if (itemsList.length === 0) {
-            }
-
-            selectedItems[category] = itemsList;
-            setCookies();  // Save the selected items to cookies
-            unlockNextCategory(category);  // Move to the next category
-            goToMainMenu();  // Return to the main menu
-        }
-
-        // Skip the category
-        function skipCategory(category) {
-            unlockNextCategory(category);
-            goToMainMenu();  // Return to the main menu
-        }
-
-        // Function to go back to the main menu
-        function goToMainMenu() {
-            const mainMenu = document.getElementById('main-menu');
-            const categoryDivs = document.querySelectorAll('.category-group');
+            const allCategories = document.querySelectorAll('.category-group');
             
-            // Hide all category divs
-            categoryDivs.forEach(div => div.classList.remove('show'));
-
-            // Show the main menu
-            mainMenu.classList.remove('hidden');
+            // Hide all categories
+            allCategories.forEach(cat => cat.classList.remove('show'));
+            
+            // Show selected category
+            categoryDiv.classList.add('show');
         }
 
-        // Unlock the next category and update the UI
-        function unlockNextCategory(category) {
-            const currentIndex = categories.indexOf(category);
-            if (currentIndex + 1 < categories.length) {
-                const nextCategory = categories[currentIndex + 1];
-                document.getElementById(`category${nextCategory}`).classList.add('show');
-            }
-            updateSummaryBox();
-        }
+        // Initialize the form
+        generateForms();
 
-        // Scroll to top
-        function scrollToTop() {
-            window.scrollTo(0, 0);
-        }
-
-        // Update the summary box
-        function updateSummaryBox() {
-            const summaryBox = document.getElementById('summary-box');
-            let summary = '';
-
-            categories.forEach(category => {
-                if (selectedItems[category].length > 0) {
-                    summary += `Category ${category}:\n`;
-                    selectedItems[category].forEach(item => {
-                        summary += ` - ${item.item}: ${item.quantity} pcs\n`;
-                    });
-                    summary += '\n';
-                }
-            });
-
-            summaryBox.textContent = summary.trim() || 'No items selected.';
-        }
-
-        // Download the summary as a text file
-        function downloadSummary() {
-            const summaryBox = document.getElementById('summary-box').textContent;
-            const blob = new Blob([summaryBox], { type: 'text/plain' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'barang-kena-beli.txt';
-            link.click();
-        }
-
-        // Function to delete cookies
-        function clearCookies() {
-            document.cookie = "selectedItems=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
-            selectedItems = {}; 
-            updateSummaryBox();
-            alert('Cookies cleared.');
-        }
-
-        // Set cookies with expiration of 1 month
-        function setCookies() {
-            const expires = new Date();
-            expires.setMonth(expires.getMonth() + 1);
-            document.cookie = `selectedItems=${JSON.stringify(selectedItems)}; expires=${expires.toUTCString()}; path=/`;
+        // Skip category
+        function skipCategory(category) {
+            const categoryDiv = document.getElementById(`category${category}`);
+            categoryDiv.classList.remove('show');
+            document.getElementById('main-menu').classList.remove('hidden');
         }
 
         // Get cookies
@@ -411,9 +317,92 @@
             return {}; 
         }
 
-        // Initialize the form
-        generateForms();
-        
+        // Set cookies
+        function setCookies() {
+            const expires = new Date();
+            expires.setMonth(expires.getMonth() + 1);
+            document.cookie = `selectedItems=${JSON.stringify(selectedItems)}; expires=${expires.toUTCString()}; path=/`;
+        }
+
+        // Clear cookies
+        function clearCookies() {
+            document.cookie = "selectedItems=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+            selectedItems = {}; 
+            updateSummaryBox();
+            alert('Cookies cleared.');
+        }
+
+        // Function to add custom item and update the summary box
+        function addCustomItem(category) {
+            const customItem = document.getElementById(`custom-item${category}`).value;
+            const customQuantity = document.getElementById(`custom-quantity${category}`).value;
+
+            if (customItem && customQuantity) {
+                const itemObject = { item: customItem, quantity: customQuantity };
+                
+                // Add custom item to selected items
+                if (!selectedItems[category]) {
+                    selectedItems[category] = [];
+                }
+                selectedItems[category].push(itemObject);
+
+                // Update the summary box immediately
+                updateSummaryBox();
+
+                // Save selected items in cookies
+                setCookies();
+
+                // Clear input fields after adding
+                document.getElementById(`custom-item${category}`).value = '';
+                document.getElementById(`custom-quantity${category}`).value = '';
+            } else {
+                alert('Please fill both item and quantity fields.');
+            }
+        }
+
+        // Function to submit the selected items for a category
+        function submitCategory(category) {
+            const form = document.getElementById(`category${category}-form`);
+            const checkboxes = form.querySelectorAll('input[type="checkbox"]');
+            const quantities = form.querySelectorAll('input[type="number"]');
+            
+            // Clear selected items for this category
+            selectedItems[category] = [];
+
+            // Loop through checkboxes and store the selected items
+            checkboxes.forEach((checkbox, index) => {
+                if (checkbox.checked) {
+                    const quantity = quantities[index].value || 1; // Default quantity to 1 if empty
+                    selectedItems[category].push({
+                        item: checkbox.value,
+                        quantity: quantity
+                    });
+                }
+            });
+
+            // Update the summary box
+            updateSummaryBox();
+
+            // Save selected items to cookies
+            setCookies();
+        }
+
+        // Function to update the summary box
+        function updateSummaryBox() {
+            const summaryBox = document.getElementById('summary-box');
+            let summaryText = 'Summary of Selected Items:\n';
+            
+            // Loop through each category and add items (including custom items) to the summary
+            categories.forEach(category => {
+                selectedItems[category]?.forEach(item => {
+                    summaryText += ` ${category}: ${item.item} - ${item.quantity} pcs\n`;
+                });
+            });
+
+            // Update the summary box with the new summary
+            summaryBox.textContent = summaryText;
+            summaryBox.style.opacity = 1; // Ensure it is visible
+        }
     </script>
 </body>
 </html>
