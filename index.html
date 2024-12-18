@@ -225,12 +225,13 @@
     <div class="container">
         <!-- Main Menu -->
         <div id="main-menu">
-            <button onclick="showCategory('A')" id="categoryA-btn">Category A</button>
-            <button onclick="showCategory('B')" id="categoryB-btn">Category B</button>
-            <button onclick="showCategory('C')" id="categoryC-btn">Category C</button>
-            <button onclick="showCategory('D')" id="categoryD-btn">Category D</button>
-            <button onclick="showCategory('E')" id="categoryE-btn">Category E</button>
-            <button onclick="showCategory('F')" id="categoryF-btn">Category F</button>
+            <button onclick="showCategory('A')" id="categoryA-btn">Breakfast 🥖/ Fruit🍎 / Veg. 🥕/ Meat🥩</button>
+            <button onclick="showCategory('B')" id="categoryB-btn">Frozen🧊 / Ice Cream🍦 / Rice🍚</button>
+            <button onclick="showCategory('C')" id="categoryC-btn">Cooking 🍲/ Cleaning 🪣/ Household🧻 / Pad🕯️</button>
+            <button onclick="showCategory('D')" id="categoryD-btn">Cotton Bud👂 / Kid Syampoo🧴</button>
+            <button onclick="showCategory('E')" id="categoryE-btn">Milk🥛 / Cornflakes 🥣/ Cookies🍪 / Garbage🗑️</button>
+            <button onclick="showCategory('F')" id="categoryF-btn">Toothpaste🪥 / Syampoo 🧴/ Soap🧼</button>
+            
         </div>
 
         <!-- Category Forms -->
@@ -241,7 +242,7 @@
             <h3>Add Custom Item</h3>
             <input type="text" id="custom-item-name" placeholder="Item Name">
             <input type="number" id="custom-item-quantity" min="1" max="25" placeholder="Quantity">
-            <button onclick="submitCustomItem()">Add Custom Item</button>
+            <button onclick="submitCustomItem()">Submit</button>
         </div>
 
         <!-- Summary Box -->
@@ -249,11 +250,11 @@
 
     <!-- Footer -->
     <div id="footer">
+    	<button onclick="showCustomItemSection()">Add Custom Item➕</button>
     	        <div id="summary-box" class="summary-box">No items selected.</div>
-    	            <button onclick="downloadSummary()">Download file yang kena beli</button>
-            <button onclick="clearCookies()">Delete Cookie</button>
-            <button onclick="showCustomItemSection()">Add Custom Item</button>
-        <p>Created by WebAzffar</p>
+    	            <button onclick="downloadSummary()">Download File 🔗</button>
+            <button onclick="clearCookies()">Delete Data🍪</button>
+        <p>Created by Azffar Ar Rayyan🥕</p>
     </div>
 
 <script>
@@ -292,8 +293,7 @@
                             </div>
                         `)
                         .join('')}
-                    <button type="submit">Submit</button>
-                    <button type="button" onclick="skipCategory('${category}')">Skip</button>
+                    <button type="submit">Save and Exit😋</button>
                 </form>
             `;
             container.appendChild(div);
@@ -404,7 +404,7 @@ function handleFormSubmit(event, category) {
     // Show summary of selected and custom items
     function showSummary() {
         const summaryBox = document.getElementById('summary-box');
-        let summaryText = "thing to buy:\n\n";
+        let summaryText = "List to Buy:\n\n";
 
         categories.forEach(category => {
             if (selectedItems[category].length > 0) {
@@ -439,6 +439,24 @@ function handleFormSubmit(event, category) {
             mainMenu.classList.add('hidden');
 
             categoryDiv.classList.add('show');
+
+        }
+        
+                // Download the summary as a text file
+
+        function downloadSummary() {
+
+            const summaryBox = document.getElementById('summary-box').textContent;
+
+            const blob = new Blob([summaryBox], { type: 'text/plain' });
+
+            const link = document.createElement('a');
+
+            link.href = URL.createObjectURL(blob);
+
+            link.download = 'barang-kena-beli.txt';
+
+            link.click();
 
         }
 
