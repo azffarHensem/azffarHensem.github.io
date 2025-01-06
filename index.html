@@ -253,6 +253,7 @@
     	<button onclick="showCustomItemSection()">Add Custom Item➕</button>
     	        <div id="summary-box" class="summary-box">No items selected.</div>
     	            <button onclick="downloadSummary()">Download File 🔗</button>
+                            <button onclick="sendWhatsApp()">Send to WhatsApp 📲</button>
             <button onclick="clearCookies()">Delete Data🍪</button>
         <p>Created by Azffar Ar Rayyan🥕</p>
     </div>
@@ -460,7 +461,6 @@ function handleFormSubmit(event, category) {
 
         }
 
-
     // Unlock the next category
     function unlockNextCategory(currentCategory) {
         const nextCategoryIndex = categories.indexOf(currentCategory) + 1;
@@ -496,6 +496,21 @@ function handleFormSubmit(event, category) {
         document.cookie = "selectedItems=;path=/;expires=Thu, 01 Jan 1970 00:00:00 UTC";
         location.reload();
     }
+    
+            function sendWhatsApp() {
+            const phone = prompt("Enter the phone number (without country code):");
+            if (phone) {
+                const countryCode = "60"; // Malaysia country code, change if needed
+                const summaryBox = document.getElementById('summary-box').textContent.trim();
+                if (summaryBox) {
+                    const message = encodeURIComponent(summaryBox);
+                    const url = `https://wa.me/${countryCode}${phone}?text=${message}`;
+                    window.open(url, '_blank');
+                } else {
+                    alert("No summary available to send.");
+                }
+            }
+        }
 
     // Initialize the form
     generateForms();
